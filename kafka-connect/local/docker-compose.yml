@@ -1,0 +1,20 @@
+---
+version: '3'
+services:
+  minio:
+    image: minio/minio:RELEASE.2022-12-07T00-56-37Z
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    command: server --console-address ":9001" /data
+
+  aws:
+    image: amazon/aws-cli
+    container_name: aws-cli
+    command: -c "sleep 2 && aws --endpoint-url http://minio:9000 s3 mb s3://my-bucket --region eu-west-1 || exit 0"
+    entrypoint: [/bin/bash]
+    environment: 
+      AWS_ACCESS_KEY_ID: "minioadmin"
+      AWS_SECRET_ACCESS_KEY: "minioadmin"
+    depends_on: 
+      - minio
