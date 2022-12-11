@@ -1,0 +1,2 @@
+{"schema": "syntax = \"proto3\"; message User { uint32 id = 1; string first_name = 2; string last_name = 3; string email = 4; string login_timestamp = 5; string ip_address = 6; string country = 7; string company = 8; }",
+"schemaType": "PROTOBUF" }
