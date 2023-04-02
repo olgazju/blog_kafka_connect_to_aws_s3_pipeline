@@ -19,16 +19,6 @@ services:
       ALLOW_TRANSITIVE: "true"
       ALLOW_DELETION: "true"
 
-  schema_registry_ui:
-    image: landoop/schema-registry-ui
-    container_name: schema-registry-ui
-    ports:
-      - "8001:8000"
-    environment:
-      - SCHEMAREGISTRY_URL=http://localhost:8081
-    depends_on:
-      - schema-registry
-
   connect:
     image: confluentinc/cp-kafka-connect-base:7.3.0
     depends_on:
