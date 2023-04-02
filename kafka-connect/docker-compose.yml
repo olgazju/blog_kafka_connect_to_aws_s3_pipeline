@@ -34,6 +34,14 @@ services:
       CONSOLE_CONFIG_FILE: |
         kafka:
           brokers: ["redpanda:29092"]
+          schemaRegistry:
+            enabled: true
+            urls: ["http://redpanda:8081"]
+        connect:
+          enabled: true
+          clusters:
+            - name: local-connect-cluster
+              url: http://connect:8083
         redpanda:
           adminApi:
             enabled: true
@@ -42,6 +50,8 @@ services:
       - 8080:8080
     depends_on:
       - redpanda
+      - schema-registry
+      - connect
 
   kafka-connect-ui:
     image: landoop/kafka-connect-ui
