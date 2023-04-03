@@ -2,10 +2,12 @@
 version: '2'
 services:
   redpanda:
-    image: vectorized/redpanda:v22.3.5
+    image: vectorized/redpanda:v22.3.11
     container_name: redpanda
     ports:
       - "9092:9092"
+      - "8081:8081"
+      - "8082:8082"
       - "29092:29092"
     command:
       - redpanda
@@ -34,9 +36,6 @@ services:
       CONSOLE_CONFIG_FILE: |
         kafka:
           brokers: ["redpanda:29092"]
-          schemaRegistry:
-            enabled: true
-            urls: ["http://redpanda:8081"]
         connect:
           enabled: true
           clusters:
@@ -50,21 +49,7 @@ services:
       - 8080:8080
     depends_on:
       - redpanda
-      - schema-registry
       - connect
-
-  kafka-connect-ui:
-    image: landoop/kafka-connect-ui
-    hostname: ui
-    container_name: ui
-    links:
-    - connect
-    depends_on:
-    - connect
-    ports:
-    - '8000:8000'
-    environment:
-      CONNECT_URL: http://connect:8083/
 
   minio:
     image: minio/minio:RELEASE.2022-12-07T00-56-37Z
