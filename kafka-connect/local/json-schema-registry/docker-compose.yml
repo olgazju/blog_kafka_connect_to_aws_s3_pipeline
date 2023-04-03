@@ -103,4 +103,35 @@ services:
         }'
         sleep infinity
 
-  
+  console:
+    image: vectorized/console:v2.1.1
+    entrypoint: /bin/sh
+    command: -c "echo \"$$CONSOLE_CONFIG_FILE\" > /tmp/config.yml; /app/console"
+    environment:
+      CONFIG_FILEPATH: /tmp/config.yml
+      CONSOLE_CONFIG_FILE: |
+        kafka:
+          brokers: ["redpanda:29092"]
+          schemaRegistry:
+            enabled: true
+            urls: ["http://redpanda:8081"]
+          protobuf:
+            enabled: true
+            schemaRegistry:
+              enabled: true
+              refreshInterval: 5m
+        connect:
+          enabled: true
+          clusters:
+            - name: local-connect-cluster
+              url: http://connect:8083
+        redpanda:
+          adminApi:
+            enabled: true
+            urls: ["http://redpanda:9644"]
+    ports:
+        - 8080:8080
+    depends_on:
+      - redpanda
+      - connect
+      - schema-registry

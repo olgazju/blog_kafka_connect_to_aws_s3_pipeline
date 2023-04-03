@@ -6,7 +6,6 @@ services:
     container_name: redpanda
     ports:
       - "9092:9092"
-      - "8081:8081"
       - "8082:8082"
       - "29092:29092"
     command:
